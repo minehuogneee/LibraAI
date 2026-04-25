@@ -2,8 +2,6 @@ Act as an expert in Information Retrieval (IR) and Evaluation Datasets for Large
 
 I need you to generate a benchmark dataset of exactly 125 simulated user questions in natural Vietnamese. These questions must reflect real-world e-commerce queries but be specifically designed to test different levels of cognitive and retrieval capabilities of an AI system.
 
-The dataset should focus on categories like: Travel books (Du ký), Business & Management (Quản trị kinh doanh, Lãnh đạo), Self-help, and Literature. 
-
 Please generate 25 blocks of questions. Each block must contain EXACTLY 5 questions following this strictly increasing difficulty hierarchy:
 
 - Question 1 (Constraint Filtering): A question asking to filter books based on 1-2 simple attributes (e.g., price < 100k, specific Publisher, specific discount %).
