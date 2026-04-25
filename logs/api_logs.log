@@ -1,0 +1,7 @@
+2026-04-25 01:11:14 - INFO - Load (9574, 768) data
+2026-04-25 01:11:14 - INFO - Init {'embedding_dim': 768, 'metric': 'cosine', 'storage_file': './dickens_ollama/vdb_entities.json'} 9574 data
+2026-04-25 01:11:14 - INFO - Load (21959, 768) data
+2026-04-25 01:11:14 - INFO - Init {'embedding_dim': 768, 'metric': 'cosine', 'storage_file': './dickens_ollama/vdb_relationships.json'} 21959 data
+2026-04-25 01:11:14 - INFO - Load (2000, 768) data
+2026-04-25 01:11:14 - INFO - Init {'embedding_dim': 768, 'metric': 'cosine', 'storage_file': './dickens_ollama/vdb_chunks.json'} 2000 data
+2026-04-25 01:11:14 - INFO - LightRAG is ready with: qwen2.5:7b

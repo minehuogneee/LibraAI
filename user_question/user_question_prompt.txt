@@ -1,0 +1,33 @@
+Act as an expert in Information Retrieval (IR) and Evaluation Datasets for Large Language Models (LLMs). I am writing a research paper evaluating a RAG (Retrieval-Augmented Generation) system for an e-commerce book platform, inspired by the methodology of LLM-as-a-Judge (MT-Bench). 
+
+I need you to generate a benchmark dataset of exactly 125 simulated user questions in natural Vietnamese. These questions must reflect real-world e-commerce queries but be specifically designed to test different levels of cognitive and retrieval capabilities of an AI system.
+
+The dataset should focus on categories like: Travel books (Du ký), Business & Management (Quản trị kinh doanh, Lãnh đạo), Self-help, and Literature. 
+
+Please generate 25 blocks of questions. Each block must contain EXACTLY 5 questions following this strictly increasing difficulty hierarchy:
+
+- Question 1 (Constraint Filtering): A question asking to filter books based on 1-2 simple attributes (e.g., price < 100k, specific Publisher, specific discount %).
+- Question 2 (Entity-Specific Detail): A direct question asking for specific metadata or content details about a named book.
+- Question 3 (Aggregation & Ranking): A question requiring the system to filter by a condition and then rank to find the Max/Min (e.g., highest rating, best-seller, lowest price).
+- Question 4 (Multi-hop Comparison): A question asking to compare 2 or 3 specific books based on attributes (price, content, writing style, discount).
+- Question 5 (Complex Multi-constraint): A highly specific question combining Author, Category, a metric threshold (price/rating), and asking for the top result.
+
+Attributes to utilize in the queries: Book title, Author, Price (VND), Discount percentage, Sales volume (số lượng bán), Rating (e.g., 4.5, 5.0), Publisher (Nhà xuất bản), Themes/Content, Physical attributes (tặng kèm bookmark, tái bản).
+
+Here are some Few-Shot Examples of the exact tone and format I want you to mimic:
+
+Block 1 (Theme: Travel Books / Price constraints):
+Question 1: "Sách du ký nào hiện đang có giá dưới 100,000 VND?"
+Question 2: "Cuốn 'Đừng Chết Ở Ả Rập Xê Út' hiện giá bao nhiêu và có giảm giá không?"
+Question 3: "Trong các sách du ký dưới 100,000 VND, cuốn nào có số lượng bán cao nhất?"
+Question 4: "So sánh giá hiện tại và mức giảm giá của 'Đi Bộ Xuyên Việt Với Cây Đàn Guitar' với 'Cô Đơn Trên Everest'."
+Question 5: "Có cuốn du ký nào dưới 100,000 VND của Nhà Xuất Bản Thế Giới với rating trên 4.5 không?"
+
+Block 2 (Theme: Business Books / Culture & Management):
+Question 1: "Cuốn 'The Culture Code' nói về điều gì?"
+Question 2: "Có sách nào về xây dựng văn hóa doanh nghiệp không?"
+Question 3: "Sách về văn hóa doanh nghiệp nào có số lượng bán cao nhất?"
+Question 4: "So sánh nội dung của 'Lãnh Đạo Và Văn Hóa Doanh Nghiệp' và '7 Bước Xây Dựng Văn Hóa Doanh Nghiệp'."
+Question 5: "Cuốn sách nào về văn hóa doanh nghiệp dưới 150,000 VND của Nhà Xuất Bản Thế Giới đáng đọc?"
+
+Now, strictly following this 5-question structure per block, generate the remaining 25 blocks (Total 125 questions). Output only the questions, numbered continuously from Question 1 to Question 125, or block by block.

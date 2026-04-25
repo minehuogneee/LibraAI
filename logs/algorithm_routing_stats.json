@@ -1,0 +1,1002 @@
+[
+    {
+        "Q1": {
+            "Câu": "Sách du ký nào hiện đang có giá dưới 100,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q2": {
+            "Câu": "Cuốn 'Đừng Chết Ở Ả Rập Xê Út' hiện giá bao nhiêu và có giảm giá không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q3": {
+            "Câu": "Trong các sách du ký dưới 100,000 VND, cuốn nào có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q4": {
+            "Câu": "So sánh giá hiện tại và mức giảm giá của 'Đi Bộ Xuyên Việt Với Cây Đàn Guitar' với 'Cô Đơn Trên Everest'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q5": {
+            "Câu": "Có cuốn du ký nào dưới 100,000 VND của Nhà Xuất Bản Thế Giới với rating trên 4.5 không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q6": {
+            "Câu": "Sách nào trong danh sách đang giảm giá trên 50%?",
+            "algorithm": "Fallback_Global",
+            "Highkeyword": true,
+            "low_keyword": false
+        }
+    },
+    {
+        "Q7": {
+            "Câu": "Cuốn 'Trên Đỉnh Namsan Ngắm Mặt Trời' có mức giảm giá bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q8": {
+            "Câu": "Trong các sách giảm giá trên 40%, cuốn nào có đánh giá trung bình cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q9": {
+            "Câu": "So sánh mức giảm giá của 3 cuốn du ký bán chạy nhất trong danh sách.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q10": {
+            "Câu": "Cuốn sách giảm giá mạnh nhất của tác giả Di Li là gì và giá hiện tại bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q11": {
+            "Câu": "Có bao nhiêu sách du ký của Nhà Xuất Bản Trẻ dưới 150,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q12": {
+            "Câu": "Cuốn 'Vạn Dặm Đường Từ Một Bước Chân' của Nhà Xuất Bản Phụ Nữ Việt Nam giá bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q13": {
+            "Câu": "Nhà Xuất Bản Thế Giới có sách du ký nào dưới 100,000 VND với rating 5.0 không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q14": {
+            "Câu": "So sánh giá và số lượng bán của các sách du ký từ Nhà Xuất Bản Lao Động và Nhà Xuất Bản Trẻ.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q15": {
+            "Câu": "Cuốn sách rẻ nhất của Nhà Xuất Bản Dân Trí hiện nay là gì và có giảm giá không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q16": {
+            "Câu": "Cuốn du ký nào có đánh giá trung bình 5.0 và giá dưới 120,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q17": {
+            "Câu": "Cuốn 'Walden Một Mình Sống Trong Rừng' có đánh giá bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q18": {
+            "Câu": "Trong các sách rating 5.0, cuốn nào có giá thấp nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q19": {
+            "Câu": "So sánh số lượng bán của 3 cuốn du ký có rating 5.0 cao nhất.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q20": {
+            "Câu": "Cuốn sách giá dưới 150,000 VND nào của tác giả Ryszard Kapuściński có rating cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q21": {
+            "Câu": "Cuốn du ký nào bán được trên 500 cuốn và giá dưới 150,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q22": {
+            "Câu": "Cuốn 'Thế Giới Rộng Lớn Đừng Đi Một Mình' đã bán được bao nhiêu cuốn?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q23": {
+            "Câu": "Trong các sách du ký bán trên 200 cuốn, cuốn nào rẻ nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q24": {
+            "Câu": "So sánh giá và rating của 3 cuốn du ký bán chạy nhất.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q25": {
+            "Câu": "Cuốn sách dưới 100,000 VND nào của Nhà Xuất Bản Lao Động bán được nhiều nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q26": {
+            "Câu": "Cuốn sách nào của Henry David Thoreau có trong danh sách?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q27": {
+            "Câu": "Cuốn 'Gỗ mun' của Ryszard Kapuściński nói về gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q28": {
+            "Câu": "Tác giả nào có nhiều sách du ký nhất trong danh sách này?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q29": {
+            "Câu": "So sánh rating và giá của các sách du ký của Di Li.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q30": {
+            "Câu": "Cuốn sách nào của Nguyễn Tường Bách có số lượng bán cao nhất và giá hiện tại là bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q31": {
+            "Câu": "Có cuốn sách du ký nào nói về Tây Tạng không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q32": {
+            "Câu": "Cuốn 'Con Đường Tơ Lụa' mô tả những địa điểm nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q33": {
+            "Câu": "Sách du ký nào về Ấn Độ có rating cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q34": {
+            "Câu": "So sánh nội dung và giá của các sách về châu Âu trong danh sách.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q35": {
+            "Câu": "Cuốn sách nào về Việt Nam dưới 150,000 VND có đánh giá 5.0?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q36": {
+            "Câu": "Cuốn 'Cô Đơn Trên Everest' có phong cách viết như thế nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q37": {
+            "Câu": "Có sách du ký nào được viết dưới dạng tự truyện không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q38": {
+            "Câu": "Sách du ký nào có phong cách kể chuyện hài hước và giá dưới 120,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q39": {
+            "Câu": "So sánh phong cách viết của 'Du Ký Phan Quang' và 'Mùi Hương Trầm'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q40": {
+            "Câu": "Cuốn sách nào của tác giả Việt Nam có phong cách chiêm nghiệm sâu sắc nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q41": {
+            "Câu": "Cuốn 'Tây Tạng Huyền Bí & Nghệ Thuật Sinh Tử' tái bản năm nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q42": {
+            "Câu": "Có sách du ký nào tái bản trong năm 2023 không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q43": {
+            "Câu": "Sách tái bản nào có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q44": {
+            "Câu": "So sánh giá và rating của các sách du ký tái bản trong danh sách.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q45": {
+            "Câu": "Cuốn sách tái bản nào của Nhà Xuất Bản Trẻ dưới 150,000 VND đáng đọc nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q46": {
+            "Câu": "Cuốn 'Cơm nhà xứ Quảng' tặng kèm gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q47": {
+            "Câu": "Có sách du ký nào tặng kèm bookmark không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q48": {
+            "Câu": "Sách nào có quà tặng kèm và giá dưới 130,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q49": {
+            "Câu": "So sánh giá và nội dung của các sách du ký có quà tặng kèm.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q50": {
+            "Câu": "Cuốn sách nào của Lý Thành Cơ có quà tặng kèm và rating bao nhiêu?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q51": {
+            "Câu": "Cuốn 'Con Đường Tơ Lụa' nói về những tuyến đường nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q52": {
+            "Câu": "Có sách nào đề cập đến hành trình từ Ấn Độ sang châu Âu không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q53": {
+            "Câu": "Sách du ký nào về các tuyến đường cổ có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q54": {
+            "Câu": "So sánh nội dung của 'Con Đường Tơ Lụa' và 'Đạp Xe Vì Tình Từ Ấn Sang Âu'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q55": {
+            "Câu": "Cuốn sách nào về tuyến đường lịch sử dưới 150,000 VND có rating 5.0?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q56": {
+            "Câu": "Cuốn 'Vòng Quanh Châu Á' nói về những nền văn hóa nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q57": {
+            "Câu": "Có sách du ký nào về văn hóa Việt Nam từ trước 1975 không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q58": {
+            "Câu": "Sách nào về văn hóa châu Á có đánh giá cao nhất và giá dưới 200,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q59": {
+            "Câu": "So sánh nội dung của 'Du Ký Việt Nam trên Nam Phong tạp chí' và 'Đà Lạt, một thời hương xa'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q60": {
+            "Câu": "Cuốn sách nào của tác giả Việt Nam viết về văn hóa châu Á bán chạy nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q61": {
+            "Câu": "Cuốn 'Du Ký Phan Quang - Tiếc Nuối Hoa Hồng' được viết bởi ai?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q62": {
+            "Câu": "Có sách du ký nào của nhà báo Lưu Đình Triều không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q63": {
+            "Câu": "Sách du ký nào của nhà báo có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q64": {
+            "Câu": "So sánh phong cách viết của Phan Quang và Nguyễn Phương Mai trong du ký.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q65": {
+            "Câu": "Cuốn sách nào của nhà báo dưới 150,000 VND có rating trên 4.5?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q66": {
+            "Câu": "Cuốn 'Tinh Hoa Du Ký Trên Tri Tân Tạp Chí' có nội dung gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q67": {
+            "Câu": "Có sách du ký nào đề cập đến tư tưởng triết học không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q68": {
+            "Câu": "Sách du ký nào có giá trị học thuật cao nhất dựa trên rating và số lượng bán?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q69": {
+            "Câu": "So sánh mức độ học thuật của 'Du Ký Việt Nam trên Nam Phong tạp chí' và 'Mùi Hương Trầm'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q70": {
+            "Câu": "Cuốn sách nào dưới 200,000 VND của Nhà Xuất Bản Thanh Niên có giá trị nghiên cứu cao?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q71": {
+            "Câu": "Cuốn '1111 - Nhật Ký Sáu Vạn Dặm Trên Yên Xe Cà Tàng' kể về trải nghiệm gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q72": {
+            "Câu": "Có sách nào viết về hành trình đi bộ xuyên Việt không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q73": {
+            "Câu": "Sách du ký nào về trải nghiệm cá nhân có rating cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q74": {
+            "Câu": "So sánh trải nghiệm trong 'Đi Bộ Xuyên Việt Với Cây Đàn Guitar' và 'Thế Giới Rộng Lớn Đừng Đi Một Mình'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q75": {
+            "Câu": "Cuốn sách nào về trải nghiệm cá nhân dưới 150,000 VND bán chạy nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q76": {
+            "Câu": "Cuốn 'Cô Đơn Trên Everest' kể về hành trình gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q77": {
+            "Câu": "Có sách nào nói về hành trình đạp xe vòng quanh thế giới không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q78": {
+            "Câu": "Sách du ký nào về hành trình mạo hiểm có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q79": {
+            "Câu": "So sánh độ kịch tính của 'Đạp Xe Vì Tình Từ Ấn Sang Âu' và '1111 - Nhật Ký Sáu Vạn Dặm'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q80": {
+            "Câu": "Cuốn sách nào về hành trình mạo hiểm của tác giả Việt Nam có rating 5.0?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q81": {
+            "Câu": "Cuốn 'Từ Rừng Thẳm Amazon Đến Quê Hương Bolero' nói về khu vực nào?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q82": {
+            "Câu": "Có sách du ký nào về Himalaya không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q83": {
+            "Câu": "Sách nào về vùng đất hoang dã có đánh giá trung bình cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q84": {
+            "Câu": "So sánh nội dung của 'HIMALAYA – Hành Trình Chạm Đến Trán Trời' và 'Tây Tạng Huyền Bí'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q85": {
+            "Câu": "Cuốn sách nào về vùng đất hoang dã dưới 200,000 VND bán chạy nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q86": {
+            "Câu": "Cuốn 'Đi Bộ Xuyên Việt Với Cây Đàn Guitar' kể về phương tiện gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q87": {
+            "Câu": "Có sách nào nói về hành trình bằng xe đạp không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q88": {
+            "Câu": "Sách du ký nào về phương tiện độc đáo có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q89": {
+            "Câu": "So sánh trải nghiệm trong 'Đạp Xe Vì Tình Từ Ấn Sang Âu' và 'Đi Thật Xa Trên Một Chiếc Camper'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q90": {
+            "Câu": "Cuốn sách nào về phương tiện độc đáo dưới 150,000 VND có rating trên 4.5?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q91": {
+            "Câu": "Cuốn 'Đừng Chết Ở Ả Rập Xê Út' kể về thử thách gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q92": {
+            "Câu": "Có sách nào viết về hành trình một mình qua sa mạc không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q93": {
+            "Câu": "Sách nào về hành trình thử thách cá nhân có rating cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q94": {
+            "Câu": "So sánh thử thách trong 'Walden Một Mình Sống Trong Rừng' và 'Cô Đơn Trên Everest'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q95": {
+            "Câu": "Cuốn sách nào về hành trình thử thách dưới 120,000 VND bán được trên 300 cuốn?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q96": {
+            "Câu": "Cuốn sách nào của Trần Đặng Đăng Khoa có trong danh sách?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q97": {
+            "Câu": "Tác giả Di Li có sách nào về hành trình mạo hiểm không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q98": {
+            "Câu": "Tác giả phiêu lưu nào có sách bán chạy nhất trong danh sách?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q99": {
+            "Câu": "So sánh nội dung và rating của các sách phiêu lưu của Nguyễn Tập và Lý Thành Cơ.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q100": {
+            "Câu": "Cuốn sách nào của Ryszard Kapuściński về phiêu lưu có giá dưới 150,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q101": {
+            "Câu": "Cuốn 'Lãnh Đạo Tỉnh Thức' nói về điều gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q102": {
+            "Câu": "Có sách nào về lãnh đạo không dùng quyền lực không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q103": {
+            "Câu": "Sách lãnh đạo nào có rating cao nhất và giá dưới 150,000 VND?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q104": {
+            "Câu": "So sánh nội dung của 'Lãnh Đạo Phục Vụ' và 'Lãnh Đạo Chuyển Hóa'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q105": {
+            "Câu": "Cuốn sách nào của PACE Books về lãnh đạo bán chạy nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q106": {
+            "Câu": "Cuốn 'Quản Trị Nhân Sự Đúng' có nội dung gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q107": {
+            "Câu": "Có sách nào về quản trị KPI không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q108": {
+            "Câu": "Sách quản trị nhân sự nào có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q109": {
+            "Câu": "So sánh giá và nội dung của 'Kỹ Năng Quản Lý Nhân Sự Chuyên Nghiệp' và 'Quản Trị KPI'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q110": {
+            "Câu": "Cuốn sách nào về nhân sự dưới 150,000 VND của Nhà Xuất Bản Công Thương đáng đọc?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q111": {
+            "Câu": "Cuốn 'Digital Transformation - Chuyển Đổi Số' nói về gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q112": {
+            "Câu": "Có sách nào về chuyển đổi số giá dưới 150,000 VND không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q113": {
+            "Câu": "Sách về chuyển đổi số nào có đánh giá trung bình cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q114": {
+            "Câu": "So sánh nội dung của 'Chuyển Đổi Số' và 'Đổi Mới Từ Cốt Lõi'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q115": {
+            "Câu": "Cuốn sách nào về chuyển đổi số của PACE Books có số lượng bán trên 300 cuốn?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q116": {
+            "Câu": "Cuốn sách nào của John C. Maxwell có trong danh sách?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q117": {
+            "Câu": "Tác giả Phan Văn Trường có sách nào về quản trị không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q118": {
+            "Câu": "Tác giả quản trị nào có sách bán chạy nhất trong danh sách?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q119": {
+            "Câu": "So sánh rating và giá của các sách của Robert S. Kaplan và David Parmenter.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q120": {
+            "Câu": "Cuốn sách nào của Michael Bunting dưới 150,000 VND có rating 5.0?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q121": {
+            "Câu": "Cuốn 'The Culture Code' nói về điều gì?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q122": {
+            "Câu": "Có sách nào về xây dựng văn hóa doanh nghiệp không?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q123": {
+            "Câu": "Sách về văn hóa doanh nghiệp nào có số lượng bán cao nhất?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q124": {
+            "Câu": "So sánh nội dung của 'Lãnh Đạo Và Văn Hóa Doanh Nghiệp' và '7 Bước Xây Dựng Văn Hóa Doanh Nghiệp'.",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    },
+    {
+        "Q125": {
+            "Câu": "Cuốn sách nào về văn hóa doanh nghiệp dưới 150,000 VND của Nhà Xuất Bản Thế Giới đáng đọc?",
+            "algorithm": "LibraAI_Proposed_Path",
+            "Highkeyword": true,
+            "low_keyword": true
+        }
+    }
+]
