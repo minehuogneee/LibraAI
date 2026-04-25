@@ -9,7 +9,7 @@ Users can then query LibraAI in natural language to explore book details and rec
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/stavidphan/LibraAI.git
+git clone https://github.com/minehuogneee/LibraAI.git
 cd LibraAI/
 ```
 
