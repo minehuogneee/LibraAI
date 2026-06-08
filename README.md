@@ -93,7 +93,7 @@ The system is served via FastAPI (`lightrag_ollama_api.py`).
 * **API Logic:** The `/query` endpoint implements a custom two-step retrieval architecture. It first extracts the context using `only_need_context=True` to accurately measure `context_time` and `context_tokens` (via `tiktoken`), followed by LLM generation to isolate retrieval latency from generation latency.
 
 ### 3. Prompt Templates & Evaluation Protocols
-* **System Prompts:** All core instructions, including the `---Thinking---` framework (Chain-of-Thought) and `no_context_response` fallbacks, are strictly defined in `[prompt.py](https://github.com/minehuogneee/LibraAI/blob/main/lightrag/prompt.py)`.
+* **System Prompts:** All core instructions, including the `---Thinking---` framework (Chain-of-Thought) and `no_context_response` fallbacks, are strictly defined in [prompt.py](https://github.com/minehuogneee/LibraAI/blob/main/lightrag/prompt.py).
 * **Evaluation Queries:** 125 curated questions were generated to cover diverse user intents (listing, comparing, factual queries). The prompt used to generate these questions is available at: [user_question_prompt.txt](https://github.com/minehuogneee/LibraAI/blob/main/user_question/user_question_prompt.txt).
 * **Benchmark Execution:** Evaluated at `top_k = 6`. Pairwise evaluation (LibraAI, LightRAG vs. MiniRAG) was conducted using the OpenAI Batch API (`Step_1_openai_batch_eval.py`) with GPT-4 as the judge, assessing Comprehensiveness, Diversity, and Empowerment.
 - **Comprehensiveness**: How much detail does the answer provide to cover all aspects and details of the question?
