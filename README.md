@@ -76,6 +76,30 @@ The overall LibraAI workflow:
 4. **Query & Response Generation**  
    - When a user sends a query, the system combines vector search with graph-based retrieval at two levels.  
    - A large language model generates natural language answers.
+   
+## Reproducibility & Benchmark Settings
+
+To ensure full reproducibility of the experiments and benchmarks mentioned in our study, please refer to the following configurations and provided scripts:
+
+### 1. Data Collection & Preprocessing
+* **Crawl Date:** The primary book dataset used for the benchmark was collected from the E-commerce platform on **April 1, 2025** (Refer to `books_data_2025-04-01_14-30-45.csv`).
+* **Crawling Logic:** Scripts `get_categories.py` and `get_books.py` handle the data extraction. The `automate_update_data.py` and `compare_data.py` scripts are used to detect data changes (deltas) and simulate real-time updates.
+* **Preprocessing:** The `insert_custom_kg.py` script parses the raw CSV to construct deterministic Knowledge Graph entities (Authors, Prices, Categories) and relationships, bypassing standard LLM extraction to ensure 100% data fidelity.
+
+### 2. Model Versions & API Endpoint Logic
+The system is served via FastAPI (`lightrag_ollama_api.py`).
+* **LLM Engine:** `gemma2:2b` via Ollama (Settings: `temperature=0.1`, `num_ctx=1024`).
+* **Embedding Model:** `nomic-embed-text` (Vector dimension explicitly configured to `768`).
+* **API Logic:** The `/query` endpoint implements a custom two-step retrieval architecture. It first extracts the context using `only_need_context=True` to accurately measure `context_time` and `context_tokens` (via `tiktoken`), followed by LLM generation to isolate retrieval latency from generation latency.
+
+### 3. Prompt Templates & Evaluation Protocols
+* **System Prompts:** All core instructions, including the `---Thinking---` framework (Chain-of-Thought) and `no_context_response` fallbacks, are strictly defined in `[prompt.py](https://github.com/minehuogneee/LibraAI/blob/main/lightrag/prompt.py)`.
+* **Evaluation Queries:** 125 curated questions were generated to cover diverse user intents (listing, comparing, factual queries). The prompt used to generate these questions is available at: [user_question_prompt.txt](https://github.com/minehuogneee/LibraAI/blob/main/user_question/user_question_prompt.txt).
+* **Benchmark Execution:** Evaluated at `top_k = 6`. Pairwise evaluation (LibraAI, LightRAG vs. MiniRAG) was conducted using the OpenAI Batch API (`Step_1_openai_batch_eval.py`) with GPT-4 as the judge, assessing Comprehensiveness, Diversity, and Empowerment.
+- **Comprehensiveness**: How much detail does the answer provide to cover all aspects and details of the question?
+- **Diversity**: How varied and rich is the answer in providing different perspectives and insights on the question?
+- **Empowerment**: How well does the answer help the reader understand and make informed judgments about the topic?
+
      
 ---
 
