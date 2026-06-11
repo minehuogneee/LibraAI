@@ -794,12 +794,10 @@ class LightRAG:
                 to_process_docs.update(failed_docs)
                 to_process_docs.update(pending_docs)
 
-                # 如果没有需要处理的文档，直接返回，保留 pipeline_status 中的内容不变
                 if not to_process_docs:
                     logger.info("No documents to process")
                     return
 
-                # 有文档需要处理，更新 pipeline_status
                 pipeline_status.update(
                     {
                         "busy": True,
@@ -808,14 +806,12 @@ class LightRAG:
                         "docs": 0,
                         "batchs": 0,
                         "cur_batch": 0,
-                        "request_pending": False,  # Clear any previous request
+                        "request_pending": False,  
                         "latest_message": "",
                     }
                 )
-                # Cleaning history_messages without breaking it as a shared list object
                 del pipeline_status["history_messages"][:]
             else:
-                # Another process is busy, just set request flag and return
                 pipeline_status["request_pending"] = True
                 logger.info(
                     "Another process is already processing the document queue. Request queued."
@@ -823,7 +819,6 @@ class LightRAG:
                 return
 
         try:
-            # Process documents until no more documents or requests
             while True:
                 if not to_process_docs:
                     log_message = "All documents have been processed or are duplicates"
@@ -832,7 +827,6 @@ class LightRAG:
                     pipeline_status["history_messages"].append(log_message)
                     break
 
-                # 2. split docs into chunks, insert chunks, update doc status
                 docs_batches = [
                     list(to_process_docs.items())[i : i + self.max_parallel_insert]
                     for i in range(0, len(to_process_docs), self.max_parallel_insert)
@@ -841,14 +835,12 @@ class LightRAG:
                 log_message = f"Number of batches to process: {len(docs_batches)}."
                 logger.info(log_message)
 
-                # Update pipeline status with current batch information
                 pipeline_status["docs"] += len(to_process_docs)
                 pipeline_status["batchs"] += len(docs_batches)
                 pipeline_status["latest_message"] = log_message
                 pipeline_status["history_messages"].append(log_message)
 
                 batches: list[Any] = []
-                # 3. iterate over batches
                 for batch_idx, docs_batch in enumerate(docs_batches):
                     # Update current batch in pipeline status (directly, as it's atomic)
                     pipeline_status["cur_batch"] += 1
@@ -1062,7 +1054,6 @@ class LightRAG:
         log_message = "All Insert done"
         logger.info(log_message)
 
-        # 获取 pipeline_status 并更新 latest_message 和 history_messages
         from lightrag.kg.shared_storage import get_namespace_data
 
         pipeline_status = await get_namespace_data("pipeline_status")
@@ -1081,10 +1072,6 @@ class LightRAG:
         update_storage = False
 
         source_ids = {chunk["source_id"] for chunk in custom_kg.get("chunks", [])}
-        # try:
-        #     await asyncio.gather(*(self.adelete_by_doc_id(source_id) for source_id in source_ids))
-        # except Exception as e:
-        #     raise Exception(f"Failed to delete documents for source_ids: {str(e)}")
         try:
             for source_id in source_ids:
                 await self.adelete_by_doc_id(source_id)
@@ -1292,7 +1279,7 @@ class LightRAG:
         Returns:
             str: The result of the query execution.
         """
-        if param.mode in ["local", "global", "hybrid"]:
+        if param.mode in ["local", "global"]:
             response = await kg_query(
                 query.strip(),
                 self.chunk_entity_relation_graph,
@@ -1332,7 +1319,7 @@ class LightRAG:
                 ),
                 system_prompt=system_prompt,
             )
-        elif param.mode == "mix":
+        elif param.mode in ["mix", "hybrid"]:
             response = await mix_kg_vector_query(
                 query.strip(),
                 self.chunk_entity_relation_graph,
@@ -1407,7 +1394,7 @@ class LightRAG:
         hl_keywords_str = ", ".join(hl_keywords)
         formatted_question = f"{prompt}\n\n### Keywords:\nHigh-level: {hl_keywords_str}\nLow-level: {ll_keywords_str}\n\n### Query:\n{query}"
 
-        if param.mode in ["local", "global", "hybrid"]:
+        if param.mode in ["local", "global"]:
             response = await kg_query_with_keywords(
                 formatted_question,
                 self.chunk_entity_relation_graph,
@@ -1445,7 +1432,7 @@ class LightRAG:
                     embedding_func=self.embedding_func,
                 ),
             )
-        elif param.mode == "mix":
+        elif param.mode in ["mix", "hybrid"]:
             response = await mix_kg_vector_query(
                 formatted_question,
                 self.chunk_entity_relation_graph,
@@ -2907,3 +2894,4 @@ class LightRAG:
                 ]
             ]
         )
+    
