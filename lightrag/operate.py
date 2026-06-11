@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from sklearn.metrics.pairwise import cosine_similarity
 import asyncio
 import json
 import re
@@ -647,6 +647,36 @@ async def kg_query(
     ll_keywords_str = ", ".join(ll_keywords) if ll_keywords else ""
     hl_keywords_str = ", ".join(hl_keywords) if hl_keywords else ""
 
+    # =====================================================================
+    # ---> ROUTING LOG: xác định luồng thực tế sau khi fallback <---
+    # =====================================================================
+    if query_param.mode == "hybrid":
+        current_path = "LibraAI_Proposed_Path"
+    elif query_param.mode == "global":
+        current_path = "Fallback_Global"   # thiếu ll_keywords
+    elif query_param.mode == "local":
+        current_path = "Fallback_Local"    # thiếu hl_keywords
+    else:
+        current_path = f"Fallback_{query_param.mode.capitalize()}"
+
+    log_msg = (
+        f"LUỒNG THỰC TẾ: {current_path} | "
+        f"HL: {bool(hl_keywords)} | LL: {bool(ll_keywords)} | "
+        f"mode={query_param.mode}"
+    )
+    print(f"\n{'='*60}")
+    print(log_msg)
+    print(f" Question: {query}")
+    print(f"{'='*60}\n")
+    try:
+        import os
+        os.makedirs("./logs", exist_ok=True)
+        with open("./logs/algorithm_routing_stats.log", "a", encoding="utf-8") as f:
+            f.write(f"{current_path}\t{query}\n")
+    except Exception:
+        pass
+    # =====================================================================
+
     # Build context
     context = await _build_query_context(
         ll_keywords_str,
@@ -661,24 +691,17 @@ async def kg_query(
     end_time = time.time()
     logging.info(f"\n\n⏳ Time for KG_QUERY -> context: {(end_time - start_time):.4f} s")
 
-    
-
-    log_path = f"./data/eval5/topk6_old/time_query_context_topk{query_param.top_k}.log"
+    log_path = f"/Users/minehuogn/Documents/LibraAI-main/data/eval5/topk6_old/time_2_query_context_topk{query_param.top_k}.log"
     elapsed_time = round(time.time() - start_time, 3)
     with open(log_path, "a", encoding="utf-8") as log_f:
         log_f.write(f"{1}\t{elapsed_time}\t{query}\n")
 
-
-    log_path = f"./data/eval5/topk6_old/number_token_context_topk{query_param.top_k}.log"
+    log_path = f"/Users/minehuogn/Documents/LibraAI-main/data/eval5/topk6_old/number_2_token_context_topk{query_param.top_k}.log"
     with open(log_path, "a", encoding="utf-8") as log_f:
         log_f.write(f"{1}\t{count_token_of_text(context)}\t{query}\n")
 
-
-
     if query_param.only_need_context:
         return context
-    # if context is None:
-    #     return PROMPTS["fail_response"]
 
     # Process conversation history
     history_context = ""
@@ -689,25 +712,17 @@ async def kg_query(
 
     if context is None:
         sys_prompt_temp = PROMPTS["no_context_response"]
-    
         sys_prompt = sys_prompt_temp.format(
             response_type=query_param.response_type,
             history=history_context,
         )
     else:
         sys_prompt_temp = system_prompt if system_prompt else PROMPTS["rag_response"]
-        
         sys_prompt = sys_prompt_temp.format(
             context_data=context,
             response_type=query_param.response_type,
             history=history_context,
         )
-
-    # if query_param.only_need_prompt:
-    #     return sys_prompt
-
-    # len_of_prompts = len(encode_string_by_tiktoken(query + sys_prompt))
-    # logger.debug(f"[kg_query]Prompt Tokens: {len_of_prompts}")
 
     response = await use_model_func(
         query,
@@ -739,11 +754,10 @@ async def kg_query(
             cache_type="query",
         ),
     )
-    
-    end_time = time.time()
-    logging.info(f"\n\n⏳ Time for KG_QUERY -> response: {(end_time - start_time):.4f} s")
-    return response
 
+    end_time = time.time()
+    logging.info(f"\n\n Time for KG_QUERY -> response: {(end_time - start_time):.4f} s")
+    return response
 
 async def extract_keywords_only(
     text: str,
@@ -863,7 +877,7 @@ async def mix_kg_vector_query(
     """
     # 1. Cache handling
     use_model_func = global_config["llm_model_func"]
-    args_hash = compute_args_hash("mix", query, cache_type="query")
+    args_hash = compute_args_hash(query_param.mode, query, cache_type="query")
     cached_response, quantized, min_val, max_val = await handle_cache(
         hashing_kv, args_hash, query, "mix", cache_type="query"
     )
@@ -888,21 +902,26 @@ async def mix_kg_vector_query(
 
             if not hl_keywords and not ll_keywords:
                 logger.warning("Both high-level and low-level keywords are empty")
+                _log_routing("Failed_No_Keywords", query)
                 return None
 
             # Convert keyword lists to strings
             ll_keywords_str = ", ".join(ll_keywords) if ll_keywords else ""
             hl_keywords_str = ", ".join(hl_keywords) if hl_keywords else ""
-
-            # Set query mode based on available keywords
+            logging.info(f"DEBUG - LL_KEYWORDS: {ll_keywords} | HL_KEYWORDS: {hl_keywords}")
+            # Set query mode based on available keywords and log routing
             if not ll_keywords_str and not hl_keywords_str:
+                _log_routing("Failed_No_Keywords", query)
                 return None
             elif not ll_keywords_str:
                 query_param.mode = "global"
+                _log_routing("Fallback_Global", query)   # thiếu ll → fallback global
             elif not hl_keywords_str:
                 query_param.mode = "local"
+                _log_routing("Fallback_Local", query)    # thiếu hl → fallback local
             else:
                 query_param.mode = "hybrid"
+                _log_routing("LibraAI_Proposed_Path", query)  # luồng chính đầy đủ
 
             # Build knowledge graph context
             context = await _build_query_context(
@@ -914,7 +933,7 @@ async def mix_kg_vector_query(
                 text_chunks_db,
                 query_param,
             )
-            
+
             end_time = time.perf_counter()
             logging.info(f"\n\n⏳ Time to get_kg_context: {(end_time - start_time):.4f} s")
             return context
@@ -973,19 +992,18 @@ async def mix_kg_vector_query(
             logger.debug(
                 f"Truncate chunks from {len(chunks)} to {len(formatted_chunks)} (max tokens:{query_param.max_token_for_text_unit})"
             )
-            
+
             end_time = time.time()
             logging.info(f"\n\n⏳ Time to get_vector_context: {(end_time - start_time):.4f} s")
-            
+
             return "\n--New Chunk--\n".join(formatted_chunks)
         except Exception as e:
             logger.error(f"Error in get_vector_context: {e}")
             return None
-    
-    # 3. Execute both retrievals in parallel
-    kg_context, vector_context = await asyncio.gather(
-        get_kg_context(), get_vector_context()
-    )
+
+    # 3. Execute retrievals sequentially to prevent Ollama Model Thrashing
+    kg_context = await get_kg_context()
+    vector_context = await get_vector_context()
 
     logging.info(f"""\n\n
     -----KG Context-----
@@ -1026,8 +1044,8 @@ async def mix_kg_vector_query(
     if query_param.only_need_prompt:
         return sys_prompt
 
-    len_of_prompts = len(encode_string_by_tiktoken(query + sys_prompt))
-    logger.debug(f"[mix_kg_vector_query]Prompt Tokens: {len_of_prompts}")
+    #len_of_prompts = len(encode_string_by_tiktoken(query + sys_prompt))
+    #logger.debug(f"[mix_kg_vector_query]Prompt Tokens: {len_of_prompts}")
 
     # 6. Generate response
     response = await use_model_func(
@@ -1062,11 +1080,26 @@ async def mix_kg_vector_query(
                 cache_type="query",
             ),
         )
-        
+
     end_time = time.time()
     logging.info(f"\n\n⏳ Time for mix_kg_vector_query -> response: {(end_time - start_time):.4f} s")
 
     return response
+
+def _log_routing(path_name: str, query: str) -> None:
+    log_msg = f"Processed Path: {path_name} | mode={path_name}"
+    print(f"\n{'='*60}")
+    print(log_msg)
+    print(f"Question: {query}")
+    print(f"{'='*60}\n")
+    logger.info(f"Processed Path: {path_name} | Question: {query}")
+    try:
+        import os
+        os.makedirs("./logs", exist_ok=True)
+        with open("./logs/algorithm_routing_stats.log", "a", encoding="utf-8") as f:
+            f.write(f"{path_name}\t{query}\n")
+    except Exception:
+        pass
 
 
 async def _build_query_context(
@@ -1094,51 +1127,17 @@ async def _build_query_context(
             text_chunks_db,
             query_param,
         )
-    else:  # hybrid mode
-        entities_context, relations_context, text_units_context = await _get_node_data(
-            ll_keywords,
-            # hl_keywords,
+    else:  # hybrid mode — LibraAI Proposed Path 
+        entities_context, relations_context, text_units_context = await _get_node_data_new(
+            ll_keywords,          
+            hl_keywords,         
             knowledge_graph_inst,
             entities_vdb,
-            # relationships_vdb,
+            relationships_vdb,
             text_chunks_db,
             query_param,
         )
-        # ll_data, hl_data = await asyncio.gather(
-        #     _get_node_data(
-        #         ll_keywords,
-        #         knowledge_graph_inst,
-        #         entities_vdb,
-        #         text_chunks_db,
-        #         query_param,
-        #     ),
-        #     _get_edge_data(
-        #         hl_keywords,
-        #         knowledge_graph_inst,
-        #         relationships_vdb,
-        #         text_chunks_db,
-        #         query_param,
-        #     ),
-        # )
 
-        # (
-        #     ll_entities_context,
-        #     ll_relations_context,
-        #     ll_text_units_context,
-        # ) = ll_data
-
-        # (
-        #     hl_entities_context,
-        #     hl_relations_context,
-        #     hl_text_units_context,
-        # ) = hl_data
-
-        # entities_context, relations_context, text_units_context = combine_contexts(
-        #     [hl_entities_context, ll_entities_context],
-        #     [hl_relations_context, ll_relations_context],
-        #     [hl_text_units_context, ll_text_units_context],
-        # )
-    # not necessary to use LLM to generate a response
     if not entities_context.strip() and not relations_context.strip():
         return None
 
@@ -1187,14 +1186,20 @@ async def _get_node_data(
         {**n, "entity_name": k["entity_name"], "rank": d}
         for k, n, d in zip(results, node_datas, node_degrees)
         if n is not None
-    ]  # what is this text_chunks_db doing.  dont remember it in airvx.  check the diagram.
+    ]
     # get entitytext chunk
+    all_related_edges_raw = await asyncio.gather(
+        *[knowledge_graph_inst.get_node_edges(dp["entity_name"]) for dp in node_datas]
+    )
+
     use_text_units, use_relations = await asyncio.gather(
         _find_most_related_text_unit_from_entities(
-            node_datas, query_param, text_chunks_db, knowledge_graph_inst
+            node_datas, query_param, text_chunks_db, knowledge_graph_inst,
+            prefetched_edges=all_related_edges_raw
         ),
         _find_most_related_edges_from_entities(
-            node_datas, query_param, knowledge_graph_inst
+            node_datas, query_param, knowledge_graph_inst,
+            prefetched_edges=all_related_edges_raw
         ),
     )
 
@@ -1236,7 +1241,7 @@ async def _get_node_data(
                 created_at,
             ]
         )
-    # entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k] 
+    entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k]
     entities_context = list_of_list_to_csv(entites_section_list)
 
     relations_section_list = [
@@ -1268,148 +1273,214 @@ async def _get_node_data(
                 created_at,
             ]
         )
-    # relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k] 
+    relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k]
     relations_context = list_of_list_to_csv(relations_section_list)
 
     text_units_section_list = [["id", "content"]]
     for i, t in enumerate(use_text_units):
         text_units_section_list.append([i, t["content"]])
-    # text_units_section_list[1:] = text_units_section_list[1:query_param.top_k + 1] 
     text_units_context = list_of_list_to_csv(text_units_section_list)
-    
+
     end_time = time.perf_counter()
     logging.info(f"\n\n⏳ Time for get_node_data: {(end_time - start_time):.4f} s")
     return entities_context, relations_context, text_units_context
-
 async def _get_node_data_new(
-    query: str,
+    ll_keywords: str,
     hl_keywords: str,
     knowledge_graph_inst: BaseGraphStorage,
     entities_vdb: BaseVectorStorage,
+    relationships_vdb: BaseVectorStorage,
     text_chunks_db: BaseKVStorage,
     query_param: QueryParam,
 ):
     start_time = time.perf_counter()
-    # get similar entities
-    logger.info(
-        f"Query nodes: {query}, top_k: {query_param.top_k}, cosine: {entities_vdb.cosine_better_than_threshold}"
-    )
-    results = await entities_vdb.query(query, top_k=query_param.top_k)
-    if not len(results):
+    TAU = 0.2  # Similarity Threshold from paper
+
+    # =========================================================
+    # STEP 1: ĐA THỰC THỂ (MULTI-ENTITY RETRIEVAL)
+    # =========================================================
+    logger.info(f"Query nodes: {ll_keywords}, top_k: {query_param.top_k}")
+    entity_results = []
+    seen_entities = set()
+    
+    # Cắt các từ khóa Low-level thành mảng (VD: "Sách A, Sách B" -> ["Sách A", "Sách B"])
+    ll_kw_list = [kw.strip() for kw in ll_keywords.split(",") if kw.strip()]
+    
+    # 1.1: Tìm chính xác (Exact Match) cho TỪNG thực thể
+    for kw in ll_kw_list:
+        exact_node = await knowledge_graph_inst.get_node(kw)
+        if exact_node is not None:
+            entity_results.append({"entity_name": kw})
+            seen_entities.add(kw)
+            logger.info(f" Exact match found in Graph: {kw}")
+
+    # 1.2: Vét thêm bằng Vector DB nếu chưa đủ top_k
+    if len(entity_results) < query_param.top_k:
+        vector_results = await entities_vdb.query(ll_keywords, top_k=query_param.top_k)
+        for r in vector_results:
+            ent_name = r["entity_name"]
+            if ent_name not in seen_entities:
+                entity_results.append(r)
+                seen_entities.add(ent_name)
+
+    entity_results = entity_results[:query_param.top_k]
+    if not entity_results:
         return "", "", ""
-    # get entity information
+
+    # Lấy data chi tiết từ Graph cho các thực thể tìm được
     node_datas, node_degrees = await asyncio.gather(
-        asyncio.gather(
-            *[knowledge_graph_inst.get_node(r["entity_name"]) for r in results]
-        ),
-        asyncio.gather(
-            *[knowledge_graph_inst.node_degree(r["entity_name"]) for r in results]
-        ),
+        asyncio.gather(*[knowledge_graph_inst.get_node(r["entity_name"]) for r in entity_results]),
+        asyncio.gather(*[knowledge_graph_inst.node_degree(r["entity_name"]) for r in entity_results]),
     )
-
-    if not all([n is not None for n in node_datas]):
-        logger.warning("Some nodes are missing, maybe the storage is damaged")
-
     node_datas = [
         {**n, "entity_name": k["entity_name"], "rank": d}
-        for k, n, d in zip(results, node_datas, node_degrees)
+        for k, n, d in zip(entity_results, node_datas, node_degrees)
         if n is not None
-    ]  # what is this text_chunks_db doing.  dont remember it in airvx.  check the diagram.
-    # get entitytext chunk
-    use_text_units, use_relations = await asyncio.gather(
-        _find_most_related_text_unit_from_entities(
-            node_datas, query_param, text_chunks_db, knowledge_graph_inst
-        ),
-        _find_most_related_edges_from_entities_new(
-            node_datas, hl_keywords, query_param, knowledge_graph_inst
-        ),
+    ]
+
+    # =========================================================
+    # STEP 2: ĐA Ý ĐỊNH (MULTI-HEAD INTENT EMBEDDING)
+    # =========================================================
+    # Cắt các từ khóa High-level thành mảng (VD: "price, sold" -> ["price", "sold"])
+    hl_kw_list = [kw.strip() for kw in hl_keywords.split(",") if kw.strip()]
+    if not hl_kw_list:
+        hl_kw_list = [hl_keywords] # Dự phòng
+
+    # Nhúng TỪNG ý định thành một vector độc lập
+    hl_vectors = await relationships_vdb.embedding_func(hl_kw_list)
+
+    use_relations_dict = {} # Dict để chứa các cạnh, tránh trùng lặp
+
+    # =========================================================
+    # STEP 3 & 4: LỌC MULTI-HEAD ARGMAX + FALLBACK
+    # =========================================================
+    for ent in node_datas:
+        ent_id = ent["entity_name"]
+        
+        # Kéo toàn bộ 1-hop của thực thể này
+        raw_edges = await knowledge_graph_inst.get_node_edges(ent_id)
+        if not raw_edges:
+            continue
+            
+        edge_pack, edge_degree = await asyncio.gather(
+            asyncio.gather(*[knowledge_graph_inst.get_edge(e[0], e[1]) for e in raw_edges]),
+            asyncio.gather(*[knowledge_graph_inst.edge_degree(e[0], e[1]) for e in raw_edges])
+        )
+        
+        valid_edges = []
+        for k, v, d in zip(raw_edges, edge_pack, edge_degree):
+            if v is not None:
+                valid_edges.append({"src_tgt": k, "rank": d, **v})
+                
+        if not valid_edges:
+            continue
+
+        # Nhúng các cạnh 1-hop thành vector
+        edge_texts = [f"{e.get('keywords', '')} {e.get('description', '')}".strip() for e in valid_edges]
+        edge_texts = [text if text else "unknown relation" for text in edge_texts]
+        edge_vectors = await relationships_vdb.embedding_func(edge_texts)
+        
+        entity_has_strong_match = False # Cờ theo dõi xem có ý định nào vượt Threshold không
+
+        # --- BẮT ĐẦU MULTI-HEAD ARGMAX ---
+        # Quét lần lượt từng ý định (VD: quét "price" xong mới quét tới "sold quantity")
+        for intent_idx, hl_vector in enumerate(hl_vectors):
+            if hl_vector is None:
+                continue
+                
+            best_edge = None
+            max_sim = -1.0
+            
+            # Tính Cosine Sim của toàn bộ cạnh 1-hop với Ý ĐỊNH HIỆN TẠI
+            for idx, vec in enumerate(edge_vectors):
+                if vec is not None:
+                    sim = cosine_similarity([hl_vector], [vec])[0][0]
+                    # Phép toán Argmax cho riêng ý định này
+                    if sim > max_sim:
+                        max_sim = sim
+                        best_edge = valid_edges[idx]
+            
+            # Kiểm duyệt ngưỡng (Threshold)
+            if max_sim >= TAU and best_edge is not None:
+                edge_key = tuple(sorted(best_edge["src_tgt"]))
+                # Lưu lại điểm Cosine cao nhất để sort sau này
+                best_edge["overall_cosine_sim"] = max(best_edge.get("overall_cosine_sim", -1.0), max_sim)
+                use_relations_dict[edge_key] = best_edge
+                entity_has_strong_match = True
+                logger.debug(f" Matched Relation for '{ent_id}' on intent '{hl_kw_list[intent_idx]}'. Sim: {max_sim:.4f} >= {TAU}")
+
+        # --- FALLBACK MECHANISM ---
+        # Nếu quét hết N ý định mà không có bất kỳ cạnh nào thỏa mãn (Cờ vẫn False) -> Fallback
+        if not entity_has_strong_match:
+            logger.debug(f" Fallback triggered for '{ent_id}'. No intents passed TAU={TAU}.")
+            fallback_edges = sorted(valid_edges, key=lambda x: (x.get("rank", 0), x.get("weight", 0.0)), reverse=True)
+            for edge in fallback_edges[:query_param.top_k]: 
+                edge_key = tuple(sorted(edge["src_tgt"]))
+                if edge_key not in use_relations_dict:
+                    use_relations_dict[edge_key] = edge
+
+    # =========================================================
+    # STEP 5: XUẤT NGỮ CẢNH (POST-PROCESSING)
+    # =========================================================
+    use_relations = list(use_relations_dict.values())
+    
+    use_relations = sorted(use_relations, key=lambda x: (x.get("overall_cosine_sim", -1.0), x.get("rank", 0), x.get("weight", 0.0)), reverse=True)
+    
+    use_relations = truncate_list_by_token_size(
+        use_relations,
+        key=lambda x: x.get("description", ""),
+        max_token_size=query_param.max_token_for_global_context,
     )
 
-    logging.info(f"use-realtion: {use_relations}")
+    use_text_units = await _find_most_related_text_unit_from_entities(
+        node_datas, query_param, text_chunks_db, knowledge_graph_inst
+    )
 
-    len_node_datas = len(node_datas)
     node_datas = truncate_list_by_token_size(
         node_datas,
-        key=lambda x: x["description"] if x["description"] is not None else "",
+        key=lambda x: x.get("description", ""),
         max_token_size=query_param.max_token_for_local_context,
-    )
-    logger.debug(
-        f"Truncate entities from {len_node_datas} to {len(node_datas)} (max tokens:{query_param.max_token_for_local_context})"
     )
 
     logger.info(
-        f"Local query uses {len(node_datas)} entites, {len(use_relations)} relations, {len(use_text_units)} chunks"
+        f"LibraAI Multi-head query uses {len(node_datas)} entities, {len(use_relations)} relations, {len(use_text_units)} chunks"
     )
 
-    # build prompt
-    entites_section_list = [
-        [
-            "id",
-            "entity",
-            "type",
-            "description",
-            "rank" "created_at",
-        ]
-    ]
+    # --- Construct Output CSV Contexts ---
+    entites_section_list = [["id", "entity", "type", "description", "rank", "created_at"]]
     for i, n in enumerate(node_datas):
         created_at = n.get("created_at", "UNKNOWN")
         if isinstance(created_at, (int, float)):
             created_at = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(created_at))
-        entites_section_list.append(
-            [
-                i,
-                n["entity_name"],
-                n.get("entity_type", "UNKNOWN"),
-                n.get("description", "UNKNOWN"),
-                n["rank"],
-                created_at,
-            ]
-        )
-    # entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k] 
+        entites_section_list.append([
+            i, n["entity_name"], n.get("entity_type", "UNKNOWN"), 
+            n.get("description", "UNKNOWN"), n["rank"], created_at
+        ])
+    entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k]
     entities_context = list_of_list_to_csv(entites_section_list)
 
-    relations_section_list = [
-        [
-            "id",
-            "source",
-            "target",
-            "description",
-            "keywords",
-            "weight",
-            "rank",
-            "created_at",
-        ]
-    ]
+    relations_section_list = [["id", "source", "target", "description", "keywords", "weight", "rank", "created_at"]]
     for i, e in enumerate(use_relations):
         created_at = e.get("created_at", "UNKNOWN")
-        # Convert timestamp to readable format
         if isinstance(created_at, (int, float)):
             created_at = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(created_at))
-        relations_section_list.append(
-            [
-                i,
-                e["src_tgt"][0],
-                e["src_tgt"][1],
-                e["description"],
-                e["keywords"],
-                e["weight"],
-                e["rank"],
-                created_at,
-            ]
-        )
-    # relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k] 
+        relations_section_list.append([
+            i, e["src_tgt"][0], e["src_tgt"][1], e.get("description", ""), 
+            e.get("keywords", ""), e.get("weight", 0), e.get("rank", 0), created_at
+        ])
+    relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k]
     relations_context = list_of_list_to_csv(relations_section_list)
 
     text_units_section_list = [["id", "content"]]
     for i, t in enumerate(use_text_units):
         text_units_section_list.append([i, t["content"]])
-    # text_units_section_list[1:] = text_units_section_list[1:query_param.top_k + 1] 
     text_units_context = list_of_list_to_csv(text_units_section_list)
-    
-    end_time = time.perf_counter()
-    logging.info(f"\n\n⏳ Time for get_node_data: {(end_time - start_time):.4f} s")
-    return entities_context, relations_context, text_units_context
 
+    end_time = time.perf_counter()
+    logger.info(f" Time for LibraAI relation-oriented context expansion: {(end_time - start_time):.4f} s")
+    
+    return entities_context, relations_context, text_units_context
+"""
 async def _get_node_data_new1(
     ll_keywords: str,
     hl_keywords: str,
@@ -1421,13 +1492,13 @@ async def _get_node_data_new1(
 ):
     start_time = time.perf_counter()
 
-    # Step 1: Truy vấn thực thể liên quan từ vector DB
+    # Step 2: Truy vấn thực thể liên quan từ vector DB bằng ll_keywords
     logger.info(f"Query nodes: {ll_keywords}, top_k: {query_param.top_k}")
     entity_results = await entities_vdb.query(ll_keywords, top_k=query_param.top_k)
     if not entity_results:
         return "", "", ""
 
-    # Step 2: Lấy thông tin các thực thể từ đồ thị
+    # Lấy thông tin các thực thể từ đồ thị
     node_datas, node_degrees = await asyncio.gather(
         asyncio.gather(
             *[knowledge_graph_inst.get_node(r["entity_name"]) for r in entity_results]
@@ -1444,9 +1515,11 @@ async def _get_node_data_new1(
     if not node_datas:
         return "", "", ""
 
-    # Step 3: Lấy top-k quan hệ từ hl_keywords để đối chiếu cho từng thực thể
+    # Step 3: Lấy top-k quan hệ từ hl_keywords (relationships_vdb) — rel_candidates
     rel_y_candidates = await relationships_vdb.query(hl_keywords, top_k=query_param.top_k)
     logging.info(f"rel-vector: {rel_y_candidates}")
+
+    # Step 4: Argmax — mỗi entity chọn quan hệ có rank cao nhất trong rel_candidates
     use_relations = []
     for ent in node_datas:
         ent_id = ent["entity_name"]
@@ -1458,19 +1531,19 @@ async def _get_node_data_new1(
             top_r = sorted(related_rels, key=lambda x: x.get("rank", 0), reverse=True)[0]
             use_relations.append(top_r)
 
-    # Step 4: Lấy text units liên quan từ các thực thể
+    # Step 5: Lấy text units liên quan từ các thực thể (parallel với Step 3-4)
     use_text_units = await _find_most_related_text_unit_from_entities(
         node_datas, query_param, text_chunks_db, knowledge_graph_inst
     )
 
-    # Step 5: Rút gọn context nếu cần
+    # Rút gọn context nếu cần
     node_datas = truncate_list_by_token_size(
         node_datas,
         key=lambda x: x["description"] or "",
         max_token_size=query_param.max_token_for_local_context,
     )
 
-    # Step 6: Build context đầu ra (CSV sections)
+    # Build context đầu ra (CSV sections)
     entities_context = list_of_list_to_csv(
         [["id", "entity", "type", "description", "rank", "created_at"]] +
         [[
@@ -1505,10 +1578,10 @@ async def _get_node_data_new1(
     )
 
     end_time = time.perf_counter()
-    logger.info(f"⏳ Time for get_node_data: {(end_time - start_time):.4f} s")
+    logger.info(f" Time for get_node_data_new1 (LibraAI hybrid): {(end_time - start_time):.4f} s")
 
     return entities_context, relations_context, text_units_context
-
+"""
 async def _find_most_related_edges_from_entities_new(
     node_datas: list[dict],
     hl_keywords: list[str],
@@ -1529,6 +1602,7 @@ async def _find_most_related_edges_from_entities_new(
                 all_edges.append(sorted_edge)
 
     # Lấy thông tin các cạnh
+    all_edges = all_edges[:10]
     all_edges_pack, all_edges_degree = await asyncio.gather(
         asyncio.gather(*[knowledge_graph_inst.get_edge(e[0], e[1]) for e in all_edges]),
         asyncio.gather(
@@ -1548,8 +1622,12 @@ async def _find_most_related_edges_from_entities_new(
 
     filtered_edges = [
         edge for edge in all_edges_data
-        if any(kw == edge["keywords"].lower() for kw in hl_keywords_lower)
+        if any(kw in edge["keywords"].lower() for kw in hl_keywords_lower)
+        or any(kw in edge["description"].lower() for kw in hl_keywords_lower)
     ]
+    # Fallback: nếu không match gì thì trả về tất cả, sort theo rank
+    if not filtered_edges:
+        filtered_edges = all_edges_data
     logging.info(f"\nfiltered_edges: {filtered_edges}")
     # Sắp xếp và cắt bớt theo số token
     filtered_edges = sorted(
@@ -1606,21 +1684,23 @@ async def _find_most_related_text_unit_from_entities(
     query_param: QueryParam,
     text_chunks_db: BaseKVStorage,
     knowledge_graph_inst: BaseGraphStorage,
+    prefetched_edges=None,
 ):
     text_units = [
         split_string_by_multi_markers(dp["source_id"], [GRAPH_FIELD_SEP])
         for dp in node_datas
     ]
-    edges = await asyncio.gather(
+    edges = prefetched_edges if prefetched_edges is not None else await asyncio.gather(
         *[knowledge_graph_inst.get_node_edges(dp["entity_name"]) for dp in node_datas]
     )
+
     all_one_hop_nodes = set()
     for this_edges in edges:
         if not this_edges:
             continue
         all_one_hop_nodes.update([e[1] for e in this_edges])
 
-    all_one_hop_nodes = list(all_one_hop_nodes)
+    all_one_hop_nodes = list(all_one_hop_nodes)[:20]
     all_one_hop_nodes_data = await asyncio.gather(
         *[knowledge_graph_inst.get_node(e) for e in all_one_hop_nodes]
     )
@@ -1641,6 +1721,7 @@ async def _find_most_related_text_unit_from_entities(
                 all_text_units_lookup[c_id] = index
                 tasks.append((c_id, index, this_edges))
 
+    tasks = tasks[:20]
     results = await asyncio.gather(
         *[text_chunks_db.get_by_id(c_id) for c_id, _, _ in tasks]
     )
@@ -1693,11 +1774,12 @@ async def _find_most_related_edges_from_entities(
     node_datas: list[dict],
     query_param: QueryParam,
     knowledge_graph_inst: BaseGraphStorage,
+    prefetched_edges=None,
 ):
     all_related_edges = await asyncio.gather(
         *[knowledge_graph_inst.get_node_edges(dp["entity_name"]) for dp in node_datas]
     )
-    
+
     all_edges = []
     seen = set()
 
@@ -1708,6 +1790,7 @@ async def _find_most_related_edges_from_entities(
                 seen.add(sorted_edge)
                 all_edges.append(sorted_edge)
 
+    all_edges = all_edges[:10]
     all_edges_pack, all_edges_degree = await asyncio.gather(
         asyncio.gather(*[knowledge_graph_inst.get_edge(e[0], e[1]) for e in all_edges]),
         asyncio.gather(
@@ -1826,7 +1909,7 @@ async def _get_edge_data(
                 created_at,
             ]
         )
-    # relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k] 
+    relations_section_list[1:] = sorted(relations_section_list[1:], key=lambda x: (x[6], x[5]), reverse=True)[:query_param.top_k]
     relations_context = list_of_list_to_csv(relations_section_list)
 
     entites_section_list = [["id", "entity", "type", "description", "rank"]]
@@ -1845,13 +1928,12 @@ async def _get_edge_data(
                 created_at,
             ]
         )
-    # entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k] 
+    entites_section_list[1:] = sorted(entites_section_list[1:], key=lambda x: x[4], reverse=True)[:query_param.top_k]
     entities_context = list_of_list_to_csv(entites_section_list)
 
     text_units_section_list = [["id", "content"]]
     for i, t in enumerate(use_text_units):
         text_units_section_list.append([i, t["content"]])
-    # text_units_section_list[1:] = text_units_section_list[1:query_param.top_k + 1] 
     text_units_context = list_of_list_to_csv(text_units_section_list)
 
     end_time = time.time()
@@ -2007,16 +2089,12 @@ async def naive_query(
 
     results = await chunks_vdb.query(query, top_k=query_param.top_k)
 
-
-
     ### log time query vector db
     # log_path = f"./data/eval4/{query_param.mode}/time_query_context_topk{query_param.top_k}.log"
     # elapsed_time = round(time.time() - start_time, 3)
 
     # with open(log_path, "a", encoding="utf-8") as log_f:
     #     log_f.write(f"{1}\t{elapsed_time}\t{query}\n")
-
-
 
     if not len(results):
         return PROMPTS["fail_response"]
@@ -2050,14 +2128,14 @@ async def naive_query(
     section = "\n--New Chunk--\n".join([c["content"] for c in maybe_trun_chunks])
     end_time = time.perf_counter()
     logging.info(f"\n\n⏳ Time for NAIVE_QUERY: {(end_time - start_time):.4f} s")
-    
+
     logging.info(f"""\n\n
     -----Chunks-----
     ```csv
     {section}
     ```
     """.strip())
-    
+
     if query_param.only_need_context:
         return section
 
@@ -2088,7 +2166,7 @@ async def naive_query(
 
     if len(response) > len(sys_prompt):
         response = (
-            response[len(sys_prompt) :]
+            response[len(sys_prompt):]
             .replace(sys_prompt, "")
             .replace("user", "")
             .replace("model", "")
@@ -2182,9 +2260,7 @@ async def kg_query_with_keywords(
     ll_keywords_str = ", ".join(ll_keywords_flat) if ll_keywords_flat else ""
     hl_keywords_str = ", ".join(hl_keywords_flat) if hl_keywords_flat else ""
 
-    # ---------------------------
-    # 3) BUILD CONTEXT
-    # ---------------------------
+ 
     context = await _build_query_context(
         ll_keywords_str,
         hl_keywords_str,
@@ -2197,15 +2273,10 @@ async def kg_query_with_keywords(
     if not context:
         return PROMPTS["fail_response"]
 
-    # If only context is needed, return it
     if query_param.only_need_context:
         return context
 
-    # ---------------------------
-    # 4) BUILD THE SYSTEM PROMPT + CALL LLM
-    # ---------------------------
 
-    # Process conversation history
     history_context = ""
     if query_param.conversation_history:
         history_context = get_conversation_turns(
